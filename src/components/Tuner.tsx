@@ -57,7 +57,7 @@ export default function Tuner() {
     ))
 
     // TUNING
-    const [tuningSet, setTuningSet] = useState<Interval[]>([])
+    const [tuningSet, setTuningSet] = useState<Record<number, Interval>>({})
 
     const tuningSetBuilder = useTuningSetBuilder({
         tuningSet,
@@ -65,11 +65,10 @@ export default function Tuner() {
     })
 
     const tuningSetInputElements = tuningSetBuilder.semitonesValues.map(semitones => {
-        const interval = tuningSet.find(i => i.semitones === semitones)
-
+        const interval = tuningSet[Math.abs(semitones)]
         return (
             <span key={semitones} style={{ margin: "10px" }}>
-                <span>{semitones}</span>
+                <span>{Math.abs(semitones)}</span>
                 <input
                     type="number"
                     value={interval ? interval.ratio : ""}
