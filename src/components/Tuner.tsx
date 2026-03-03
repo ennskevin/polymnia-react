@@ -38,6 +38,41 @@ export default function Tuner() {
 
     return (
         <>
+            <section>
+                <div>
+                    DISPLAY GRAPHICS
+                </div>
+            </section>
+
+            <section>
+                <div>
+                    DISPLAY TUNING RESPONSE (raw)
+                </div>
+            </section>
+
+            <section>
+                <div>
+
+                    <section>
+                        <div>
+                            Harmony display
+                        </div>
+                    </section>
+
+                    <section>
+                        <div>
+                            Harmony builder
+                        </div>
+                    </section>
+
+                    <section>
+                        <div>
+                            Tuning Set builder
+                        </div>
+                    </section>
+
+                </div>
+            </section>
         </>
     )
 }
