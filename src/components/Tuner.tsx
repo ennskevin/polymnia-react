@@ -1,4 +1,5 @@
 import { useState } from "react"
+import { useHarmonyBuilder } from "../hooks/useHarmonyBuilder";
 
 export default function Tuner() {
 
@@ -33,53 +34,22 @@ export default function Tuner() {
         cents: number;
     }
 
-    function createInterval(semitones: number): Interval {
-        return ({
-            semitones,
-            ratio: 0,
-            cents: 0,
-        })
-    }
-    
-    const harmonyCheckboxValues = [
-        ...Array.from({ length: 49 }, (_, i) => -24 + i)
-    ]
-
     const [harmony, setHarmony] = useState<Interval[]>([
-        createInterval(0)
+        { semitones: 0, ratio: 0, cents: 0 }
     ])
 
-    function harmonyIntervalIsSelected(value: number): boolean {
-        return harmony.some(interval => interval.semitones === value)
-    }
+    const harmonyBuilder = useHarmonyBuilder({
+        harmony,
+        setHarmony
+    })
 
-    function sortIntervals(arr: Interval[]): Interval[] {
-        return arr.sort((a, b) => a.semitones - b.semitones)
-    }
-
-    // THIS IS OUR HARMONY BUILDING STATE SETTER
-    function toggleHarmonyIntervals(value: number) {
-        if (value === 0) return
-        setHarmony(prev => {
-            const exists = prev.some(i => i.semitones === value)
-            let next: Interval[]
-            if (exists) {
-                next = prev.filter(i => i.semitones !== value)
-            }
-            else {
-                next = [...prev, createInterval(value)]
-            }
-            return sortIntervals(next)
-        })
-    }
-
-    const harmonyCheckBoxElements = harmonyCheckboxValues.map(value => (
+    const harmonyCheckBoxElements = harmonyBuilder.harmonyCheckboxValues.map(value => (
         <label key={value}>
             <input 
                 type="checkbox"
-                checked={harmonyIntervalIsSelected(value)}
+                checked={harmonyBuilder.harmonyIntervalIsSelected(value)}
                 disabled={value === 0}
-                onChange={() => toggleHarmonyIntervals(value)}
+                onChange={() => harmonyBuilder.toggleHarmonyIntervals(value)}
             />
             {value}
         </label>
