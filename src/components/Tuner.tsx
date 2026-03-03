@@ -43,30 +43,25 @@ export default function Tuner() {
         setHarmony
     })
 
-    const harmonyCheckBoxElements = harmonyBuilder.harmonyCheckboxValues.map(value => (
-        <label key={value}>
-            <input 
-                type="checkbox"
-                checked={harmonyBuilder.harmonyIntervalIsSelected(value)}
-                disabled={value === 0}
-                onChange={() => harmonyBuilder.toggleHarmonyIntervals(value)}
-            />
+    const harmonyCheckBoxElements = harmonyBuilder.buttonValues.map(value => (
+        <button
+            key={value}
+            type="button"
+            aria-pressed={harmonyBuilder.isSelected(value)}
+            disabled={value === 0}
+            onClick={() => harmonyBuilder.toggleHarmonyIntervals(value)}
+        >
             {value}
-        </label>
+        </button>
     ))
 
     const harmonyDisplayElements = harmony.map(interval => (
-        <div>{interval.semitones}</div>
+        <span key={interval.semitones} style={{ margin: "2px" }}>{interval.semitones}</span>
     ))
 
 
     // for later
     // const [tuningSet, setTuningSet] = useState<Interval[]>([])
-
-
-
-    console.log(harmonyCheckBoxElements)
-
 
 
     return (

@@ -37,3 +37,7 @@ div#root {
   padding-inline: 1rem;
 }
 
+button[aria-pressed="true"] {
+  background-color: red;
+  color: white;
+}
