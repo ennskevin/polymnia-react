@@ -1,5 +1,7 @@
 import { useState } from "react"
 import { useHarmonyBuilder } from "../hooks/useHarmonyBuilder";
+import { useTuningSetBuilder } from "../hooks/useTuningSetBuilder";
+import type { Interval } from "../types/interval";
 
 export default function Tuner() {
 
@@ -28,12 +30,7 @@ export default function Tuner() {
      * 
      */
 
-    type Interval = {
-        semitones: number;
-        ratio: number;
-        cents: number;
-    }
-
+    // HARMONY
     const [harmony, setHarmony] = useState<Interval[]>([
         { semitones: 0, ratio: 0, cents: 0 }
     ])
@@ -43,7 +40,7 @@ export default function Tuner() {
         setHarmony
     })
 
-    const harmonyCheckBoxElements = harmonyBuilder.buttonValues.map(value => (
+    const harmonyButtonElements = harmonyBuilder.buttonValues.map(value => (
         <button
             key={value}
             type="button"
@@ -59,9 +56,33 @@ export default function Tuner() {
         <span key={interval.semitones} style={{ margin: "2px" }}>{interval.semitones}</span>
     ))
 
+    // TUNING
+    const [tuningSet, setTuningSet] = useState<Record<number, Interval>>({})
 
-    // for later
-    // const [tuningSet, setTuningSet] = useState<Interval[]>([])
+    const tuningSetBuilder = useTuningSetBuilder({
+        tuningSet,
+        setTuningSet
+    })
+
+    const tuningSetInputElements = tuningSetBuilder.semitonesValues.map(semitones => {
+        const interval = tuningSet[Math.abs(semitones)]
+        return (
+            <span key={semitones} style={{ margin: "10px" }}>
+                <span>{Math.abs(semitones)}</span>
+                <input
+                    type="number"
+                    value={interval ? interval.ratio : ""}
+                    onChange={(e) => 
+                        tuningSetBuilder.updateRatio(semitones, e.target.value)
+                    }
+                    style={{ width: "45px" }}
+                    disabled={semitones === 0}
+                />
+            </span>
+        )
+    })
+
+    console.log(tuningSet)
 
 
     return (
@@ -91,13 +112,14 @@ export default function Tuner() {
                     <section>
                         <div>
                             HARMONY BUILDER
-                            {harmonyCheckBoxElements}
+                            {harmonyButtonElements}
                         </div>
                     </section>
 
                     <section>
                         <div>
                             Tuning Set builder
+                            {tuningSetInputElements}
                         </div>
                     </section>
 

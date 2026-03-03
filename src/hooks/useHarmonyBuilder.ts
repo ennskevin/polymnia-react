@@ -1,11 +1,6 @@
 import { useMemo } from "react"
-
-type Interval = {
-    semitones: number;
-    ratio: number;
-    cents: number;
-}
-
+import type { Interval } from "../types/interval"
+ 
 type Props = {
     harmony: Interval[];
     setHarmony: React.Dispatch<React.SetStateAction<Interval[]>>;
