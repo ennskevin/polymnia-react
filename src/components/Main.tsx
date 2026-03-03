@@ -1,3 +1,5 @@
+import Tuner from "./Tuner"
+
 export default function Main() {
 
     /**
@@ -7,6 +9,7 @@ export default function Main() {
 
     return (
         <>
+            <Tuner />
         </>
     )
 }
