@@ -13,7 +13,7 @@ type Props = {
 
 export function useHarmonyBuilder({ harmony, setHarmony }: Props) {
 
-    const harmonyCheckboxValues: number[] = useMemo(() => [
+    const buttonValues: number[] = useMemo(() => [
         ...Array.from({ length: 49 }, (_, i) => -24 + i)
     ], [])
 
@@ -29,7 +29,7 @@ export function useHarmonyBuilder({ harmony, setHarmony }: Props) {
         return arr.sort((a, b) => a.semitones - b.semitones)
     }
 
-    function harmonyIntervalIsSelected(value: number): boolean {
+    function isSelected(value: number): boolean {
         return harmony.some(interval => interval.semitones === value)
     }
 
@@ -50,8 +50,8 @@ export function useHarmonyBuilder({ harmony, setHarmony }: Props) {
     }
 
     return {
-        harmonyCheckboxValues,
-        harmonyIntervalIsSelected,
+        buttonValues,
+        isSelected,
         toggleHarmonyIntervals
     }
 }
