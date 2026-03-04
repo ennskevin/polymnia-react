@@ -1,0 +1,1 @@
+// frequency bands, mirrored(X), amplitude (Y)

@@ -1,12 +1,12 @@
 import { useMemo } from "react"
 import type { Interval } from "../types/interval"
- 
+
 type Props = {
     harmony: Interval[];
     setHarmony: React.Dispatch<React.SetStateAction<Interval[]>>;
 }
 
-export function useHarmonyBuilder({ harmony, setHarmony }: Props) {
+export default function HarmonyBuilder({ harmony, setHarmony }: Props) {
 
     const buttonValues: number[] = useMemo(() => [
         ...Array.from({ length: 49 }, (_, i) => -24 + i)
@@ -44,9 +44,21 @@ export function useHarmonyBuilder({ harmony, setHarmony }: Props) {
         })
     }
 
-    return {
-        buttonValues,
-        isSelected,
-        toggleHarmonyIntervals
-    }
+    const harmonyButtonElements = buttonValues.map(value => (
+        <button
+            key={value}
+            type="button"
+            aria-pressed={isSelected(value)}
+            disabled={value === 0}
+            onClick={() => toggleHarmonyIntervals(value)}
+        >
+            {value}
+        </button>
+    ))
+
+    return (
+        <>
+            {harmonyButtonElements}
+        </>
+    )
 }

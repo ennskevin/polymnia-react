@@ -1,7 +1,8 @@
-import { useState } from "react"
-import { useHarmonyBuilder } from "../hooks/useHarmonyBuilder";
-import { useTuningSetBuilder } from "../hooks/useTuningSetBuilder";
+import { useState } from "react";
 import type { Interval } from "../types/interval";
+import HarmonyBuilder from "./HarmonyBuilder";
+import TuningSetBuilder from "./TuningSetBuilder";
+import HarmonyDisplay from "./HarmonyDisplay";
 
 export default function Tuner() {
 
@@ -35,61 +36,16 @@ export default function Tuner() {
         { semitones: 0, ratio: 0, cents: 0 }
     ])
 
-    const harmonyBuilder = useHarmonyBuilder({
-        harmony,
-        setHarmony
-    })
-
-    const harmonyButtonElements = harmonyBuilder.buttonValues.map(value => (
-        <button
-            key={value}
-            type="button"
-            aria-pressed={harmonyBuilder.isSelected(value)}
-            disabled={value === 0}
-            onClick={() => harmonyBuilder.toggleHarmonyIntervals(value)}
-        >
-            {value}
-        </button>
-    ))
-
-    const harmonyDisplayElements = harmony.map(interval => (
-        <span key={interval.semitones} style={{ margin: "2px" }}>{interval.semitones}</span>
-    ))
-
     // TUNING
     const [tuningSet, setTuningSet] = useState<Record<number, Interval>>({})
 
-    const tuningSetBuilder = useTuningSetBuilder({
-        tuningSet,
-        setTuningSet
-    })
-
-    const tuningSetInputElements = tuningSetBuilder.semitonesValues.map(semitones => {
-        const interval = tuningSet[Math.abs(semitones)]
-        return (
-            <span key={semitones} style={{ margin: "10px" }}>
-                <span>{Math.abs(semitones)}</span>
-                <input
-                    type="number"
-                    value={interval ? interval.ratio : ""}
-                    onChange={(e) => 
-                        tuningSetBuilder.updateRatio(semitones, e.target.value)
-                    }
-                    style={{ width: "45px" }}
-                    disabled={semitones === 0}
-                />
-            </span>
-        )
-    })
-
-    console.log(tuningSet)
-
+    // todo: PAYLOAD HANDLING
 
     return (
         <>
             <section>
                 <div>
-                    DISPLAY GRAPHICS
+                    HARMONY GRAPHICS
                 </div>
             </section>
 
@@ -105,21 +61,28 @@ export default function Tuner() {
                     <section>
                         <div>
                             Harmony display
-                            {harmonyDisplayElements}
+                            <HarmonyDisplay
+                                harmony={harmony}
+                            />
                         </div>
                     </section>
 
                     <section>
                         <div>
                             HARMONY BUILDER
-                            {harmonyButtonElements}
+                            <HarmonyBuilder 
+                                harmony={harmony}
+                                setHarmony={setHarmony}
+                            />
                         </div>
                     </section>
 
                     <section>
                         <div>
-                            Tuning Set builder
-                            {tuningSetInputElements}
+                            <TuningSetBuilder 
+                                tuningSet={tuningSet}
+                                setTuningSet={setTuningSet}
+                            />
                         </div>
                     </section>
 
