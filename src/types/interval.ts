@@ -3,3 +3,4 @@ export type Interval = {
     ratio: number;
     cents: number;
 }
+

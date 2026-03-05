@@ -36,10 +36,38 @@ export default function Tuner() {
         { semitones: 0, ratio: 0, cents: 0 }
     ])
 
-    // TUNING
+    // TUNINGSET
     const [tuningSet, setTuningSet] = useState<Record<number, Interval>>({})
 
-    // todo: PAYLOAD HANDLING
+    function buildPayload() {
+        const tuningSetArray = Object.values(tuningSet)
+        return {
+            harmony: harmony.map(interval => (
+                {semitones: interval.semitones}
+            )),
+            tuningSet: tuningSetArray.map(interval => (
+                {
+                    semitones: interval.semitones,
+                    ratio: interval.ratio
+                }
+            ))
+        }
+    }
+
+    async function submitTuning() {
+        const payload = buildPayload()
+        const response = await fetch("/api/tuning", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        })
+        const data = await response.json()
+        console.log("Response:", data)
+    }
+    
+    console.log(buildPayload())
 
     return (
         <>
@@ -65,6 +93,12 @@ export default function Tuner() {
                                 harmony={harmony}
                             />
                         </div>
+                    </section>
+
+                    <section>
+                        <button onClick={submitTuning}>
+                            TUNE
+                        </button>
                     </section>
 
                     <section>
