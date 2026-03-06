@@ -34,7 +34,7 @@ export default function Tuner() {
 
     // HARMONY
     const [harmony, setHarmony] = useState<Interval[]>([
-        { semitones: 0, ratio: 1, cents: 0 }
+        { semitones: 0, ratio: 1, cents: 0, frequency: undefined }
     ])
 
     // TUNINGSET
@@ -47,7 +47,8 @@ export default function Tuner() {
     // REQUEST AND RESPONSE HANDLING
     function buildPayload() {
         const tuningSetArray = Object.values(tuningSet)
-        return {
+        // build essential payload
+        const payload: any = {
             harmony: harmony.map(interval => (
                 {semitones: interval.semitones}
             )),
@@ -58,6 +59,10 @@ export default function Tuner() {
                 }
             ))
         }
+        // add optionals
+        if (anchor) payload.anchor=anchor
+        console.log(payload)
+        return payload
     }
 
     async function submitTuning() {
@@ -77,10 +82,18 @@ export default function Tuner() {
     type TuningResponse = {
         harmony: Interval[];
         tuningSet: Interval[];
+        frequencies: number[] | undefined;
     }
 
     function handleResponse(data: TuningResponse) {
-        setHarmony(data.harmony)
+        let newHarmony = data.harmony
+        if (data.frequencies) {
+            newHarmony = newHarmony.map((interval, i) => ({
+                ...interval,
+                frequency: data.frequencies![i]
+            }))
+        }
+        setHarmony(newHarmony)
     }
 
     console.log(harmony)
