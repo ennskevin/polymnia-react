@@ -12,11 +12,12 @@ export default function HarmonyBuilder({ harmony, setHarmony }: Props) {
         ...Array.from({ length: 49 }, (_, i) => -24 + i)
     ], [])
 
+    // creates 12TET intervals
     function createInterval(semitones: number): Interval {
         return ({
             semitones,
-            ratio: 0,
-            cents: 0,
+            ratio: (2 ** (1/12)) ** semitones,
+            cents: semitones * 100,
         })
     }
 

@@ -3,6 +3,7 @@ import type { Interval } from "../types/interval";
 import HarmonyBuilder from "./HarmonyBuilder";
 import TuningSetBuilder from "./TuningSetBuilder";
 import HarmonyDisplay from "./HarmonyDisplay";
+import Anchor from "./Anchor";
 
 export default function Tuner() {
 
@@ -33,15 +34,21 @@ export default function Tuner() {
 
     // HARMONY
     const [harmony, setHarmony] = useState<Interval[]>([
-        { semitones: 0, ratio: 0, cents: 0 }
+        { semitones: 0, ratio: 1, cents: 0, frequency: undefined }
     ])
 
     // TUNINGSET
     const [tuningSet, setTuningSet] = useState<Record<number, Interval>>({})
 
+    // ANCHOR
+    const [anchor, setAnchor] = useState<number | undefined>()
+
+
+    // REQUEST AND RESPONSE HANDLING
     function buildPayload() {
         const tuningSetArray = Object.values(tuningSet)
-        return {
+        // build essential payload
+        const payload: any = {
             harmony: harmony.map(interval => (
                 {semitones: interval.semitones}
             )),
@@ -52,6 +59,10 @@ export default function Tuner() {
                 }
             ))
         }
+        // add optionals
+        if (anchor) payload.anchor=anchor
+        console.log(payload)
+        return payload
     }
 
     async function submitTuning() {
@@ -64,11 +75,29 @@ export default function Tuner() {
             body: JSON.stringify(payload)
         })
         const data = await response.json()
+        handleResponse(data)
         console.log("Response:", data)
     }
     
-    console.log(buildPayload())
+    type TuningResponse = {
+        harmony: Interval[];
+        tuningSet: Interval[];
+        frequencies: number[] | undefined;
+    }
 
+    function handleResponse(data: TuningResponse) {
+        let newHarmony = data.harmony
+        if (data.frequencies) {
+            newHarmony = newHarmony.map((interval, i) => ({
+                ...interval,
+                frequency: data.frequencies![i]
+            }))
+        }
+        setHarmony(newHarmony)
+    }
+
+    console.log(harmony)
+    
     return (
         <>
             <section>
@@ -99,6 +128,15 @@ export default function Tuner() {
                         <button onClick={submitTuning}>
                             TUNE
                         </button>
+                    </section>
+
+                    <section>
+                        <div>
+                            <Anchor
+                                anchor={anchor}
+                                setAnchor={setAnchor}
+                            />
+                        </div>
                     </section>
 
                     <section>
