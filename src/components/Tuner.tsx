@@ -33,12 +33,17 @@ export default function Tuner() {
 
     // HARMONY
     const [harmony, setHarmony] = useState<Interval[]>([
-        { semitones: 0, ratio: 0, cents: 0 }
+        { semitones: 0, ratio: 1, cents: 0 }
     ])
 
     // TUNINGSET
     const [tuningSet, setTuningSet] = useState<Record<number, Interval>>({})
 
+    // ANCHOR
+    const [anchor, setAnchor] = useState<number>()
+
+
+    // REQUEST AND RESPONSE HANDLING
     function buildPayload() {
         const tuningSetArray = Object.values(tuningSet)
         return {
@@ -64,11 +69,21 @@ export default function Tuner() {
             body: JSON.stringify(payload)
         })
         const data = await response.json()
+        handleResponse(data)
         console.log("Response:", data)
     }
     
-    console.log(buildPayload())
+    type TuningResponse = {
+        harmony: Interval[];
+        tuningSet: Interval[];
+    }
 
+    function handleResponse(data: TuningResponse) {
+        setHarmony(data.harmony)
+    }
+
+    console.log(harmony)
+    
     return (
         <>
             <section>
