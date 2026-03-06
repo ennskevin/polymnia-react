@@ -3,6 +3,7 @@ import type { Interval } from "../types/interval";
 import HarmonyBuilder from "./HarmonyBuilder";
 import TuningSetBuilder from "./TuningSetBuilder";
 import HarmonyDisplay from "./HarmonyDisplay";
+import Anchor from "./Anchor";
 
 export default function Tuner() {
 
@@ -40,7 +41,7 @@ export default function Tuner() {
     const [tuningSet, setTuningSet] = useState<Record<number, Interval>>({})
 
     // ANCHOR
-    const [anchor, setAnchor] = useState<number>()
+    const [anchor, setAnchor] = useState<number | undefined>()
 
 
     // REQUEST AND RESPONSE HANDLING
@@ -114,6 +115,15 @@ export default function Tuner() {
                         <button onClick={submitTuning}>
                             TUNE
                         </button>
+                    </section>
+
+                    <section>
+                        <div>
+                            <Anchor
+                                anchor={anchor}
+                                setAnchor={setAnchor}
+                            />
+                        </div>
                     </section>
 
                     <section>
