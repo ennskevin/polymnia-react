@@ -4,6 +4,7 @@ import HarmonyBuilder from "./HarmonyBuilder";
 import TuningSetBuilder from "./TuningSetBuilder";
 import HarmonyDisplay from "./HarmonyDisplay";
 import Anchor from "./Anchor";
+import HarmonyText from "./HarmonyText";
 
 export default function Tuner() {
 
@@ -45,13 +46,14 @@ export default function Tuner() {
 
     // UPDATE HARMONY WHEN ANCHOR CHANGES
     useEffect(() => {
-        if (!anchor) return
+        // if (!anchor) return
         setHarmony(prev => {
             return prev.map(interval => (
                 {...interval, frequency: anchor ? anchor * interval.ratio : undefined}
             ))
         })
     }, [anchor])
+    console.log(anchor)
     
 
 
@@ -119,7 +121,9 @@ export default function Tuner() {
 
             <section>
                 <div>
-                    DISPLAY TUNING RESPONSE (raw)
+                    <HarmonyText 
+                        harmony={harmony}
+                    />
                 </div>
             </section>
 
