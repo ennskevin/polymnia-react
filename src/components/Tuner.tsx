@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import type { Interval } from "../types/interval";
 import HarmonyBuilder from "./HarmonyBuilder";
 import TuningSetBuilder from "./TuningSetBuilder";
@@ -42,6 +42,17 @@ export default function Tuner() {
 
     // ANCHOR
     const [anchor, setAnchor] = useState<number | undefined>()
+
+    // UPDATE HARMONY WHEN ANCHOR CHANGES
+    useEffect(() => {
+        if (!anchor) return
+        setHarmony(prev => {
+            return prev.map(interval => (
+                {...interval, frequency: anchor ? anchor * interval.ratio : undefined}
+            ))
+        })
+    }, [anchor])
+    
 
 
     // REQUEST AND RESPONSE HANDLING
@@ -145,6 +156,7 @@ export default function Tuner() {
                             <HarmonyBuilder 
                                 harmony={harmony}
                                 setHarmony={setHarmony}
+                                anchor={anchor}
                             />
                         </div>
                     </section>

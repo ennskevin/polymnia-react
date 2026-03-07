@@ -4,9 +4,10 @@ import type { Interval } from "../types/interval"
 type Props = {
     harmony: Interval[];
     setHarmony: React.Dispatch<React.SetStateAction<Interval[]>>;
+    anchor: number | undefined
 }
 
-export default function HarmonyBuilder({ harmony, setHarmony }: Props) {
+export default function HarmonyBuilder({ harmony, setHarmony, anchor }: Props) {
 
     const buttonValues: number[] = useMemo(() => [
         ...Array.from({ length: 49 }, (_, i) => -24 + i)
@@ -14,11 +15,13 @@ export default function HarmonyBuilder({ harmony, setHarmony }: Props) {
 
     // creates 12TET intervals
     function createInterval(semitones: number): Interval {
-        return ({
+        const ratio = (2 ** (1/12)) ** semitones
+        return {
             semitones,
-            ratio: (2 ** (1/12)) ** semitones,
+            ratio,
             cents: semitones * 100,
-        })
+            frequency: anchor ? anchor * ratio : undefined
+        }
     }
 
     function sortIntervals(arr: Interval[]): Interval[] {
