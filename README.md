@@ -1,4 +1,29 @@
-# React + TypeScript + Vite
+# Polymnia Front End UI
+
+A musical tuning app where you define the harmony and the rules by which to tune it!
+
+## About
+
+Originally written for just intonation, but the algorithm for tuning allows any intonation!
+
+## Use
+
+Define how a few (or a whole octave) intervals should be tuned, and the rest will be derived. The harmonies default as 12-tone equal temperament (12TET), but once you define a tuning set, the 'tune' button will use it to intonate your harmony. 
+
+Include an anchor frequency to define your center note (which does not necesarilly need to be in the center), and the app will tell you every frequency in your harmony.
+
+If an anchor frequency is ommitted, the tuner will simply tell you the cents of a given note relative to the center note.
+
+A center (or anchor) note can be at the bottom, top, or anywhere in the middle of you harmony.
+
+## In the works:
+
+### Oscilloscopes
+
+An XY steresoscope, a waveform scope, and a frequency band scope are on their way!
+
+
+# React + TypeScript + Vite (boilerplate info from vite build)
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
