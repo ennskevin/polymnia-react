@@ -37,6 +37,10 @@ div#root {
   padding-inline: 1rem;
 }
 
+.flow > * + * {
+  margin: 0 5px 0;
+}
+
 button[aria-pressed="true"] {
   background-color: red;
   color: white;
