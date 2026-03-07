@@ -43,6 +43,11 @@ export default function Tuner() {
     // ANCHOR
     const [anchor, setAnchor] = useState<number | undefined>()
 
+    // UPDATE HARMONY WHEN ANCHOR CHANGES
+    function udpateFrequencies() {
+
+    }
+
 
     // REQUEST AND RESPONSE HANDLING
     function buildPayload() {
@@ -145,6 +150,7 @@ export default function Tuner() {
                             <HarmonyBuilder 
                                 harmony={harmony}
                                 setHarmony={setHarmony}
+                                anchor={anchor}
                             />
                         </div>
                     </section>

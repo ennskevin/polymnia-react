@@ -1,5 +1,7 @@
 import { useMemo } from "react";
 import type { Interval } from "../types/interval";
+import { useNumericInput } from "../hooks/useNumericInput";
+import TuningRatioInput from "./TuningRatioInput";
 
 type Props = {
     tuningSet: Record<number, Interval>;
@@ -31,7 +33,8 @@ export default function TuningSetBuilder({ tuningSet, setTuningSet }: Props) {
             next[key] = {
                 semitones: key,
                 ratio: numeric,
-                cents: 0
+                cents: 0,
+                frequency: undefined
             }
             return next
         })
@@ -40,18 +43,12 @@ export default function TuningSetBuilder({ tuningSet, setTuningSet }: Props) {
     const tuningSetInputElements = semitonesValues.map(semitones => {
         const interval = tuningSet[Math.abs(semitones)]
         return (
-            <span key={semitones} style={{ margin: "10px" }}>
-                <span>{Math.abs(semitones)}</span>
-                <input
-                    type="number"
-                    value={interval ? interval.ratio : ""}
-                    onChange={(e) => 
-                        updateRatio(semitones, e.target.value)
-                    }
-                    style={{ width: "45px" }}
-                    disabled={semitones === 0}
-                />
-            </span>
+            <TuningRatioInput 
+                key={semitones}
+                semitones={semitones}
+                interval={interval}
+                setTuningSet={setTuningSet}
+            />
         )
     })
 
