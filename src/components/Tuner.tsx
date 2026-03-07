@@ -79,6 +79,7 @@ export default function Tuner() {
     }
 
     async function submitTuning() {
+        if (harmony.length < 2 || Object.keys(tuningSet).length === 0) return
         const payload = buildPayload()
         const response = await fetch("/api/tuning", {
             method: "POST",
@@ -87,6 +88,10 @@ export default function Tuner() {
             },
             body: JSON.stringify(payload)
         })
+        if (!response.ok) {
+            console.error("Request failed:", response.status)
+            return
+        }
         const data = await response.json()
         handleResponse(data)
         console.log("Response:", data)
@@ -109,7 +114,7 @@ export default function Tuner() {
         setHarmony(newHarmony)
     }
 
-    console.log(harmony)
+    // console.log(harmony)
     
     return (
         <>
