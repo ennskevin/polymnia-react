@@ -29,6 +29,12 @@ export default function TuningRatioInput({ semitones, interval, setTuningSet }: 
 
     const { input, onChange } = useNumericInput(interval?.ratio, setRatio, { allowFractions: true })
 
+    function handleBlur() {
+        if (!interval) return
+        console.log("blur being handled")
+        console.log(interval)
+    }
+
     return(
         <span key={semitones} style={{ margin: "10px" }}>
             <span>{Math.abs(semitones)}</span>
@@ -36,6 +42,7 @@ export default function TuningRatioInput({ semitones, interval, setTuningSet }: 
                 type="text"
                 value={input}
                 onChange={(e) => onChange(e.target.value)}
+                onBlur={handleBlur}
                 style={{ width: "45px" }}
                 disabled={semitones === 0}
             />

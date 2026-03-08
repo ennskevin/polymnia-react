@@ -14,32 +14,6 @@ export default function TuningSetBuilder({ tuningSet, setTuningSet }: Props) {
         ...Array.from({ length: 33 }, (_, i) => -16 + i)
     ], [])
 
-    function updateRatio(semitones: number, value: string) {
-        const key = Math.abs(semitones)
-        setTuningSet(prev => {
-            const next = {...prev}
-
-            if (value.trim() === "") {
-                delete next[key]
-                return next
-            }
-
-            const numeric = Number(value)
-
-            if (Number.isNaN(numeric)) {
-                return prev;
-            }
-
-            next[key] = {
-                semitones: key,
-                ratio: numeric,
-                cents: 0,
-                frequency: undefined
-            }
-            return next
-        })
-    }
-
     const tuningSetInputElements = semitonesValues.map(semitones => {
         const interval = tuningSet[Math.abs(semitones)]
         return (

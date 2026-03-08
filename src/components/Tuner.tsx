@@ -53,9 +53,6 @@ export default function Tuner() {
             ))
         })
     }, [anchor])
-    console.log(anchor)
-    
-
 
     // REQUEST AND RESPONSE HANDLING
     function buildPayload() {
