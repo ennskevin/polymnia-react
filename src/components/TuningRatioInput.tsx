@@ -29,6 +29,22 @@ export default function TuningRatioInput({ semitones, interval, setTuningSet }: 
 
     const { input, onChange } = useNumericInput(interval?.ratio, setRatio, { allowFractions: true })
 
+    function handleBlur() {
+        if (!interval) return
+        console.log(interval)
+        const TwelveTETCents = interval.semitones * 100
+        const diff = Math.abs(interval.cents - TwelveTETCents)
+        if (diff > 60) {
+            // reset the button and remove the interval
+            console.log(`Diff is ${diff} cents. Clearing ratio`)
+            setTuningSet(prev => {
+                const next = {...prev}
+                delete next[interval.semitones]
+                return next
+            })
+        }
+    }
+
     return(
         <span key={semitones} style={{ margin: "10px" }}>
             <span>{Math.abs(semitones)}</span>
@@ -36,6 +52,7 @@ export default function TuningRatioInput({ semitones, interval, setTuningSet }: 
                 type="text"
                 value={input}
                 onChange={(e) => onChange(e.target.value)}
+                onBlur={handleBlur}
                 style={{ width: "45px" }}
                 disabled={semitones === 0}
             />
