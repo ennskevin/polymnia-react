@@ -9,7 +9,7 @@ type Props = {
 
 export default function TuningRatioInput({ semitones, interval, setTuningSet }: Props) {
 
-    function setRatio(value: number | undefined) {
+    function setRatio(value: number | undefined, raw?: string) {
         const key = Math.abs(semitones)
         setTuningSet(prev => {
             const next = {...prev}
@@ -20,14 +20,20 @@ export default function TuningRatioInput({ semitones, interval, setTuningSet }: 
             next[key] = {
                 semitones: key,
                 ratio: value,
-                cents: 0,
+                displayRatio: raw ?? value.toString(),
+                cents: 1200 * Math.log2(value),
                 frequency: undefined
             }
             return next
         })
     }
 
-    const { input, onChange } = useNumericInput(interval?.ratio, setRatio, { allowFractions: true })
+    const { input, onChange } = useNumericInput(
+        interval?.ratio,
+        setRatio,
+        { allowFractions: true },
+        interval?.displayRatio
+    )
 
     function handleBlur() {
         if (!interval) return

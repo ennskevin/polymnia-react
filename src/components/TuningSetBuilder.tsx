@@ -1,6 +1,5 @@
 import { useMemo } from "react";
 import type { Interval } from "../types/interval";
-import { useNumericInput } from "../hooks/useNumericInput";
 import TuningRatioInput from "./TuningRatioInput";
 
 type Props = {

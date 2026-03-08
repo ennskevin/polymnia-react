@@ -6,8 +6,9 @@ type Options = {
 
 export function useNumericInput(
     value: number | undefined,
-    setValue: (value: number | undefined) => void,
-    options?: Options
+    setValue: (value: number | undefined, raw?: string) => void,
+    options?: Options,
+    displayValue?: string
 ) {
 
     const allowFractions = options?.allowFractions ?? false
@@ -18,6 +19,10 @@ export function useNumericInput(
     useEffect(() => {
         if (internalUpdate.current) {
             internalUpdate.current = false
+            return
+        }
+        if (displayValue !== undefined) {
+            setInput(displayValue)
             return
         }
         setInput(value?.toString() ?? "")
@@ -57,7 +62,7 @@ export function useNumericInput(
         const parsed = allowFractions ? parseFraction(newValue) : Number(newValue)
         if (parsed === undefined || parsed <= 0) return
         internalUpdate.current = true
-        setValue(parsed)
+        setValue(parsed, newValue)
     }
 
     return {
