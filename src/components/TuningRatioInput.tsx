@@ -31,8 +31,18 @@ export default function TuningRatioInput({ semitones, interval, setTuningSet }: 
 
     function handleBlur() {
         if (!interval) return
-        console.log("blur being handled")
         console.log(interval)
+        const TwelveTETCents = interval.semitones * 100
+        const diff = Math.abs(interval.cents - TwelveTETCents)
+        if (diff > 60) {
+            // reset the button and remove the interval
+            console.log(`Diff is ${diff} cents. Clearing ratio`)
+            setTuningSet(prev => {
+                const next = {...prev}
+                delete next[interval.semitones]
+                return next
+            })
+        }
     }
 
     return(
