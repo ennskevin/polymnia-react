@@ -27,7 +27,7 @@ export default function TuningRatioInput({ semitones, interval, setTuningSet }: 
         })
     }
 
-    const { input, onChange } = useNumericInput(interval?.ratio, setRatio)
+    const { input, onChange } = useNumericInput(interval?.ratio, setRatio, { allowFractions: true })
 
     return(
         <span key={semitones} style={{ margin: "10px" }}>
