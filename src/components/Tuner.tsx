@@ -114,7 +114,7 @@ export default function Tuner() {
         setHarmony(newHarmony)
     }
 
-    // console.log(harmony)
+    console.log(tuningSet)
     
     return (
         <>
