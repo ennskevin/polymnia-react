@@ -20,7 +20,7 @@ export default function TuningRatioInput({ semitones, interval, setTuningSet }: 
             next[key] = {
                 semitones: key,
                 ratio: value,
-                cents: 0,
+                cents: 1200 * Math.log2(value),
                 frequency: undefined
             }
             return next
