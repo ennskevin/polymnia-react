@@ -50,8 +50,10 @@ export function useHarmonyPlayer() {
             const key = Number(keyStr)
             if (!harmony.find(i => i.semitones === key)) {
                 const entry = oscMapRef.current[key]
-                entry.gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.05)
-                entry.osc.stop(ctx.currentTime + 0.05)
+                entry.gain.gain.cancelScheduledValues(ctx.currentTime)
+                entry.gain.gain.setValueAtTime(entry.gain.gain.value, ctx.currentTime)
+                entry.gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.5)
+                entry.osc.stop(ctx.currentTime + 0.5)
                 delete oscMapRef.current[key]
             }
         })

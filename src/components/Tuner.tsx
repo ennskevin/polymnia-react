@@ -10,7 +10,7 @@ import { useHarmonyPlayer } from "../hooks/useHarmonyPlayer";
 export default function Tuner() {
 
     /**
-     * This is the feature component for tuning
+     * This is the feature component for tuning and playback
      * 
      * For basic functionality, it will be composed of an interval
      * builder and a tuning set builder
@@ -34,16 +34,31 @@ export default function Tuner() {
      * 
      */
 
+    // ANCHOR
+    const [anchor, setAnchor] = useState<number | undefined>()
+
     // HARMONY
     const [harmony, setHarmony] = useState<Interval[]>([
         { semitones: 0, ratio: 1, cents: 0, frequency: undefined }
     ])
 
+    // 12TET harmony
+    const [use12TET, setUse12TET] = useState(false)
+    const twelveTETHarmony = harmony.map(interval => ({
+        ...interval,
+        ratio: (2 ** (1 / 12)) ** interval.semitones,
+        cents: interval.semitones * 100,
+        frequency: anchor ? anchor * Math.pow(2, interval.semitones / 12) : undefined
+    }))
+
+    const activeHarmony = use12TET ? twelveTETHarmony : harmony
+
+    function toggle12TET() {
+        setUse12TET(prev => !prev)
+    }
+
     // TUNINGSET
     const [tuningSet, setTuningSet] = useState<Record<number, Interval>>({})
-
-    // ANCHOR
-    const [anchor, setAnchor] = useState<number | undefined>()
 
     // UPDATE HARMONY WHEN ANCHOR CHANGES
     useEffect(() => {
@@ -119,8 +134,8 @@ export default function Tuner() {
 
     // if harmony changed while playback is playing
     useEffect(() => {
-        if (playing) playHarmony(harmony)
-    },[harmony])
+        if (playing) playHarmony(activeHarmony)
+    },[activeHarmony])
 
     
     return (
@@ -155,10 +170,16 @@ export default function Tuner() {
                         <button onClick={submitTuning}>
                             TUNE
                         </button>
-                     </section>
+                    </section>
 
                     <section>
-                        <button onClick={() => togglePlayback(harmony)}>
+                        <button onClick={toggle12TET}>
+                            {use12TET ? "12TET OFF" : "12TET ON"}
+                        </button>
+                    </section>
+
+                    <section>
+                        <button onClick={() => togglePlayback(activeHarmony)}>
                             {playing ? "STOP" : "PLAY"}
                         </button>
                     </section>
