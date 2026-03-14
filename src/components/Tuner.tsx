@@ -149,7 +149,7 @@ export default function Tuner() {
             <section>
                 <div>
                     <HarmonyText 
-                        harmony={harmony}
+                        harmony={activeHarmony}
                     />
                 </div>
             </section>
@@ -161,7 +161,7 @@ export default function Tuner() {
                         <div>
                             Harmony display
                             <HarmonyDisplay
-                                harmony={harmony}
+                                harmony={activeHarmony}
                             />
                         </div>
                     </section>
