@@ -5,6 +5,7 @@ import TuningSetBuilder from "./TuningSetBuilder";
 import HarmonyDisplay from "./HarmonyDisplay";
 import Anchor from "./Anchor";
 import HarmonyText from "./HarmonyText";
+import { useHarmonyPlayer } from "../hooks/useHarmonyPlayer";
 
 export default function Tuner() {
 
@@ -112,6 +113,15 @@ export default function Tuner() {
     }
 
     console.log(tuningSet)
+
+    // PLAYBACK HOOK
+    const { playing, togglePlayback, playHarmony } = useHarmonyPlayer()
+
+    // if harmony changed while playback is playing
+    useEffect(() => {
+        if (playing) playHarmony(harmony)
+    },[harmony])
+
     
     return (
         <>
@@ -144,6 +154,12 @@ export default function Tuner() {
                     <section>
                         <button onClick={submitTuning}>
                             TUNE
+                        </button>
+                     </section>
+
+                    <section>
+                        <button onClick={() => togglePlayback(harmony)}>
+                            {playing ? "STOP" : "PLAY"}
                         </button>
                     </section>
 
