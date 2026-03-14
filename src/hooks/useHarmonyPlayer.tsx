@@ -10,15 +10,25 @@ export function useHarmonyPlayer() {
     const audioCtxRef = useRef<AudioContext | null>(null)
     const oscMapRef = useRef<Record<number, OscillatorEntry>>({})
     const [playing, setPlaying] = useState(false)
+    const analyserRef = useRef<AnalyserNode | null>(null)
 
     function initAudioContext() {
-        if (!audioCtxRef.current) audioCtxRef.current = new AudioContext()
+        if (!audioCtxRef.current) {
+            const ctx = new AudioContext()
+            const analyser = ctx.createAnalyser()
+            analyser.fftSize = 2048
+            analyser.connect(ctx.destination)
+            audioCtxRef.current = ctx
+            analyserRef.current = analyser
+        }
+        
         if (audioCtxRef.current.state === "suspended") audioCtxRef.current.resume()
         return audioCtxRef.current
     }
 
     function playHarmony(harmony: Interval[]) {
         const ctx = initAudioContext()
+
         harmony.forEach(interval => {
             if (!interval.frequency) return
 
@@ -40,6 +50,7 @@ export function useHarmonyPlayer() {
                 gain.gain.setValueAtTime(0, ctx.currentTime)
                 gain.gain.linearRampToValueAtTime(0.1, ctx.currentTime + 0.25)
                 osc.connect(gain)
+                gain.connect(analyserRef.current!)
                 gain.connect(ctx.destination)
                 osc.start()
                 oscMapRef.current[key] = { osc, gain }
@@ -81,6 +92,6 @@ export function useHarmonyPlayer() {
         else playHarmony(harmony)
     }
 
-    return { playing, playHarmony, stopHarmony, togglePlayback }
+    return { playing, playHarmony, stopHarmony, togglePlayback, analyser: analyserRef.current }
 
 }
