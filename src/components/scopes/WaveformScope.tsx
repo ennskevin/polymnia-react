@@ -24,18 +24,32 @@ export default function WaveformScope({ analyser, width = 300, height = 300 }: P
             requestAnimationFrame(draw)
             analyser?.getByteTimeDomainData(dataArray)
 
+            let triggerIndex = 0
+            for (let i =1; i < bufferLength; i++) {
+                if (dataArray[i - 1] < 128 && dataArray[i] >= 128) {
+                    triggerIndex = i
+                    break
+                }
+            }
+
             ctx.fillStyle = "white"
             ctx.fillRect(0, 0, width, height)
-            ctx.lineWidth = 2
+            ctx.lineWidth = 3
             ctx.strokeStyle = "black"
             ctx.beginPath()
             
-            const visibleSamples = 128
+            const visibleSamples = 512
             const sliceWidth = width / visibleSamples
+
+            const jitter = Math.floor(Math.random() * 2)
+            triggerIndex += jitter
+
             let x = 0
 
-            for (let i = 0; i < bufferLength; i++) {
-                const v = dataArray[i] / 128.0
+            for (let i = 20; i < bufferLength; i++) {
+                const index = triggerIndex + i
+                if (index >= bufferLength) break
+                const v = dataArray[index] / 128.0
                 const y = v * height / 2
                 if (i === 0) ctx.moveTo(x,y)
                 else ctx.lineTo(x, y)
