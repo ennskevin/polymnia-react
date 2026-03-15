@@ -31,6 +31,7 @@ export function useHarmonyPlayer() {
 
         harmony.forEach(interval => {
             if (!interval.frequency) return
+            if (interval.frequency < 50) return
 
             const key = interval.semitones
             const existing = oscMapRef.current[key]

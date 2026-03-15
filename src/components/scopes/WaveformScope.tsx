@@ -43,14 +43,27 @@ export default function WaveformScope({ analyser, width = 300, height = 300 }: P
 
             const jitter = Math.floor(Math.random() * 2)
             triggerIndex += jitter
+            const fadeSamples =64
 
             let x = 0
 
-            for (let i = 20; i < bufferLength; i++) {
+            for (let i = 0; i < visibleSamples; i++) {
                 const index = triggerIndex + i
-                if (index >= bufferLength) break
+                if (index + 1 >= bufferLength) break
+
                 const v = dataArray[index] / 128.0
-                const y = v * height / 2
+                const vNext = dataArray[index + 1] / 128.0
+                const vSmooth = (v + vNext) * 0.5
+
+                let y = (vSmooth * height / 2)
+
+                const distanceFromRight = visibleSamples - i
+                if (distanceFromRight < fadeSamples) {
+                    const fade = (distanceFromRight / fadeSamples) ** 2
+                    y = height / 2 + (y - height / 2) * fade
+                }
+
+
                 if (i === 0) ctx.moveTo(x,y)
                 else ctx.lineTo(x, y)
                 x += sliceWidth
