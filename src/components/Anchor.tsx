@@ -11,9 +11,9 @@ export default function Anchor({ anchor, setAnchor }: Props) {
 
     return (
         <>
-            <span>Anchor Frequency</span>
             <input
                 type="text"
+                placeholder="anchor"
                 value={input}
                 onChange={(e) => onChange(e.target.value)}
             />

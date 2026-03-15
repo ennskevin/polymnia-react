@@ -11,7 +11,7 @@ type Props = {
 export default function WaveformScope({ analyser, width = 300, height = 300 }: Props) {
     const canvasRef = useRef<HTMLCanvasElement>(null)
     
-    // draw
+    // Drawing. ctx if a CANVAS context, not audio
     useEffect(() => {
         if (!analyser) return
 
@@ -25,7 +25,7 @@ export default function WaveformScope({ analyser, width = 300, height = 300 }: P
             analyser?.getByteTimeDomainData(dataArray)
 
             let triggerIndex = 0
-            for (let i =1; i < bufferLength; i++) {
+            for (let i = 1; i < bufferLength; i++) {
                 if (dataArray[i - 1] < 128 && dataArray[i] >= 128) {
                     triggerIndex = i
                     break
@@ -34,16 +34,25 @@ export default function WaveformScope({ analyser, width = 300, height = 300 }: P
 
             ctx.fillStyle = "white"
             ctx.fillRect(0, 0, width, height)
-            ctx.lineWidth = 3
-            ctx.strokeStyle = "black"
+
+            ctx.lineWidth = 0.4
+            const gradient = ctx.createLinearGradient(0,0,width,0)
+            gradient.addColorStop(0, "#3e3e3e")
+            gradient.addColorStop(1, "#000000")
+            ctx.strokeStyle = gradient // "black" // color
+
+            ctx.lineCap = "round"
+            ctx.lineJoin = "round"
+
+
             ctx.beginPath()
             
-            const visibleSamples = 512
+            const visibleSamples = 1024
             const sliceWidth = width / visibleSamples
 
-            const jitter = Math.floor(Math.random() * 2)
+            const jitter = Math.floor(Math.random() * 4)
             triggerIndex += jitter
-            const fadeSamples =64
+            const fadeSamples = 32
 
             let x = 0
 
@@ -59,7 +68,7 @@ export default function WaveformScope({ analyser, width = 300, height = 300 }: P
 
                 const distanceFromRight = visibleSamples - i
                 if (distanceFromRight < fadeSamples) {
-                    const fade = (distanceFromRight / fadeSamples) ** 2
+                    const fade = (distanceFromRight / fadeSamples)
                     y = height / 2 + (y - height / 2) * fade
                 }
 
@@ -71,6 +80,7 @@ export default function WaveformScope({ analyser, width = 300, height = 300 }: P
 
             ctx.lineTo(width, height / 2)
             ctx.stroke()
+
         }
 
         draw()

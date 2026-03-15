@@ -52,17 +52,17 @@ export default function TuningRatioInput({ semitones, interval, setTuningSet }: 
     }
 
     return(
-        <span key={semitones} style={{ margin: "10px" }}>
-            <span>{Math.abs(semitones)}</span>
+        <div key={semitones} className="interval" style={{}}>
+            {/* <span>{Math.abs(semitones)}</span> */}
             <input
                 type="text"
                 value={input}
                 onChange={(e) => onChange(e.target.value)}
                 onBlur={handleBlur}
-                style={{ width: "45px" }}
+                style={{}}
                 disabled={semitones === 0}
             />
-        </span>
+        </div>
     )
 
 }
