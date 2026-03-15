@@ -65,7 +65,7 @@ export function useHarmonyPlayer() {
                 entry.gain.gain.cancelScheduledValues(ctx.currentTime)
                 entry.gain.gain.setValueAtTime(entry.gain.gain.value, ctx.currentTime)
                 entry.gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.5)
-                entry.osc.stop(ctx.currentTime + 0.5)
+                entry.osc.stop(ctx.currentTime + 1.2)
                 delete oscMapRef.current[key]
             }
         })
@@ -75,7 +75,7 @@ export function useHarmonyPlayer() {
 
     function stopHarmony() {
         const ctx = audioCtxRef.current
-        const release = 0.5
+        const release = 1.2
         if (!ctx) return
         Object.values(oscMapRef.current).forEach(({ osc, gain }) => {
             const now = ctx.currentTime

@@ -115,84 +115,71 @@ export default function Tuner() {
 
     
     return (
-        <>
-            <section>
-                <div>
+        <main className="tuner-page">
+            <section className="page-section scope-section">
+                <div className="content">
                     <WaveformScope 
                         analyser={analyser}
                     />
                 </div>
             </section>
 
-            <section>
-                <div>
+            <section className="page-section tuner-section">
+                <div className="content">
+
+                    <div className="panel harmony-display">
+                        <HarmonyDisplay
+                            harmony={activeHarmony}
+                        />
+                    </div>
+
+                    <div className="panel controls">
+                        <button onClick={submitTuning}>
+                            TUNE
+                        </button>
+
+                        <button onClick={() => togglePlayback(activeHarmony)}>
+                            {playing ? "STOP" : "PLAY"}
+                        </button>
+
+                        <button onClick={toggle12TET}>
+                            {use12TET ? "TURN 12TET OFF" : "TURN 12TET ON"}
+                        </button>
+                    </div>
+
+                    <div className="panel anchor">
+                        <Anchor
+                            anchor={anchor}
+                            setAnchor={setAnchor}
+                        />
+                    </div>
+
+                    <div className="panel harmony-builder">
+                        <HarmonyBuilder 
+                            harmony={harmony}
+                            setHarmony={setHarmony}
+                            anchor={anchor}
+                        />
+                    </div>
+
+                    <div className="panel tuning-set-builder">
+                        <TuningSetBuilder 
+                            tuningSet={tuningSet}
+                            setTuningSet={setTuningSet}
+                        />
+                    </div>
+
+                </div>
+
+            </section>
+
+            <section className="page-section harmony-text-section">
+                <div className="content">
                     <HarmonyText 
                         harmony={activeHarmony}
                     />
                 </div>
             </section>
-
-            <section>
-                <div>
-
-                    <section>
-                        <div>
-                            Harmony display
-                            <HarmonyDisplay
-                                harmony={activeHarmony}
-                            />
-                        </div>
-                    </section>
-
-                    <section>
-                        <button onClick={submitTuning}>
-                            TUNE
-                        </button>
-                    </section>
-
-                    <section>
-                        <button onClick={toggle12TET}>
-                            {use12TET ? "TURN 12TET OFF" : "TURN 12TET ON"}
-                        </button>
-                    </section>
-
-                    <section>
-                        <button onClick={() => togglePlayback(activeHarmony)}>
-                            {playing ? "STOP" : "PLAY"}
-                        </button>
-                    </section>
-
-                    <section>
-                        <div>
-                            <Anchor
-                                anchor={anchor}
-                                setAnchor={setAnchor}
-                            />
-                        </div>
-                    </section>
-
-                    <section>
-                        <div>
-                            HARMONY BUILDER
-                            <HarmonyBuilder 
-                                harmony={harmony}
-                                setHarmony={setHarmony}
-                                anchor={anchor}
-                            />
-                        </div>
-                    </section>
-
-                    <section>
-                        <div>
-                            <TuningSetBuilder 
-                                tuningSet={tuningSet}
-                                setTuningSet={setTuningSet}
-                            />
-                        </div>
-                    </section>
-
-                </div>
-            </section>
-        </>
+        </main>
     )
 }

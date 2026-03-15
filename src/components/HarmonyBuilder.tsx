@@ -50,6 +50,7 @@ export default function HarmonyBuilder({ harmony, setHarmony, anchor }: Props) {
 
     const harmonyButtonElements = buttonValues.map(value => (
         <button
+            className="interval"
             key={value}
             type="button"
             aria-pressed={isSelected(value)}
