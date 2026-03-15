@@ -6,33 +6,9 @@ import HarmonyDisplay from "./HarmonyDisplay";
 import Anchor from "./Anchor";
 import HarmonyText from "./HarmonyText";
 import { useHarmonyPlayer } from "../hooks/useHarmonyPlayer";
+import WaveformScope from "./scopes/WaveformScope";
 
 export default function Tuner() {
-
-    /**
-     * This is the feature component for tuning and playback
-     * 
-     * For basic functionality, it will be composed of an interval
-     * builder and a tuning set builder
-     * 
-     * Containers:
-     *  interval builder -> interval bank (checklist?), selected harmony (selected checklist?)
-     *  tuning set builder -> text input for each interval [1, 15(whatever the highest one we allow)]
-     * 
-     * State:
-     *  harmony = [{semitones, ratio, cents}]
-     *  tuningSet = [{semitons, ratio}]
-     * 
-     *  banks -> harmony bank, tuningset bank,
-     * 
-     * Derived state:
-     *  isTuned -> if tuning request successful (200 status), then true.
-     *  
-     *  
-     * 
-     * User interaction:
-     * 
-     */
 
     // ANCHOR
     const [anchor, setAnchor] = useState<number | undefined>()
@@ -130,7 +106,7 @@ export default function Tuner() {
     console.log(tuningSet)
 
     // PLAYBACK HOOK
-    const { playing, togglePlayback, playHarmony } = useHarmonyPlayer()
+    const { playing, togglePlayback, playHarmony, analyser } = useHarmonyPlayer()
 
     // if harmony changed while playback is playing
     useEffect(() => {
@@ -142,7 +118,9 @@ export default function Tuner() {
         <>
             <section>
                 <div>
-                    HARMONY GRAPHICS
+                    <WaveformScope 
+                        analyser={analyser}
+                    />
                 </div>
             </section>
 
@@ -174,7 +152,7 @@ export default function Tuner() {
 
                     <section>
                         <button onClick={toggle12TET}>
-                            {use12TET ? "12TET OFF" : "12TET ON"}
+                            {use12TET ? "TURN 12TET OFF" : "TURN 12TET ON"}
                         </button>
                     </section>
 
