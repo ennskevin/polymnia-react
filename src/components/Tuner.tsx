@@ -70,7 +70,7 @@ export default function Tuner() {
     async function submitTuning() {
         if (harmony.length < 2 || Object.keys(tuningSet).length === 0) return
         const payload = buildPayload()
-        const response = await fetch("polymnia/api/tuning", {
+        const response = await fetch("/polymnia/api/tuning", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
