@@ -8,5 +8,6 @@ export default defineConfig({
     proxy: {
       "/api": "http://polymnia-api-alb-635866723.us-east-2.elb.amazonaws.com"
     }
-  }
+  },
+  base: "/polymnia/"
 })
