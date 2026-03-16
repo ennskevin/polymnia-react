@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      "/api": "http://localhost:8080"
+      "/api": "http://polymnia-api-alb-635866723.us-east-2.elb.amazonaws.com"
     }
   }
 })
